@@ -1,0 +1,150 @@
+{% extends 'root.html' %} {% block content %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  .video-title {
+    cursor: pointer;
+    color: #007bff;
+  }
+</style>
+
+<div class="container-fluid bg-light py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h1 class="mb-4">Manage Content</h1>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <button
+          id="add-course-button"
+          data-bs-toggle="modal"
+          data-bs-target="#addCategoryModal"
+          class="btn btn-primary"
+        >
+          Add/Update Content
+        </button>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <h4>
+          <a
+            class="nav-link"
+            href="{% url 'quiz:quizzes' slug=slug %}"
+            style="color: blue"
+            ><button class="btn btn-primary">Create Quiz</button>
+          </a>
+        </h4>
+        <a class="nav-link" href="{% url 'website_content:course_view' slug %}"
+          ><button class="btn btn-primary">Views</button></a
+        >
+      </div>
+    </div>
+
+    <div class="row row-cols-md-3 g-3 mt-4">
+      {% for video in courses %}
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5
+              class="card-title video-title"
+              onclick="openModal('{{ video.video_file.url }}')"
+            >
+              {{ video.title }}
+            </h5>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<!-- Video Modal -->
+<div
+  class="modal"
+  id="videoModal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+  style="max-width: 100px 700px"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button
+          type="button"
+          class="close"
+          onclick="closeModal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="embed-responsive embed-responsive-16by9">
+          <video
+            class="embed-responsive-item"
+            controls
+            id="modalVideo"
+            style="width: 100%; height: 100%"
+          >
+            <source src="" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(videoSrc) {
+    var modal = document.getElementById("videoModal");
+    var modalVideo = modal.querySelector("#modalVideo");
+    modalVideo.src = videoSrc;
+    modal.style.display = "block";
+  }
+
+  function closeModal() {
+    var modal = document.getElementById("videoModal");
+    var modalVideo = modal.querySelector("#modalVideo");
+    modalVideo.src = "";
+    modal.style.display = "none";
+  }
+</script>
+
+<!-- Add the following modal code -->
+<div
+  class="modal fade"
+  id="addCategoryModal"
+  tabindex="-1"
+  aria-labelledby="addCategoryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCategoryModalLabel">
+          Add/Update Content
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %} {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include Bootstrap JS library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+{% endblock%}

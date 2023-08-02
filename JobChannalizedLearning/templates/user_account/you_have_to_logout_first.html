@@ -1,0 +1,12 @@
+{% extends 'root.html' %}
+
+
+{% block content %}
+
+<div class="container">
+	<div class="d-flex flex-column">
+		<p class="m-auto">You are currently logged in. You may go ahead and <a href={% url 'user_account:logout' %}>logout</a> to access this page.</p>
+	</div>
+</div>
+
+{% endblock %}

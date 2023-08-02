@@ -1,0 +1,27 @@
+{% extends "root.html" %} {% block content %}
+
+<div class="container bg-white">
+  <h1 class="mt-5">{{ course.title }} Views</h1>
+  <h5>Total Views: {{ course_views }}</h5>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Student IDs</th>
+          <th>Number of times viewed</th>
+          <th>First Viewed At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in detail %}
+        <tr>
+          <td>{{ d.user }}</td>
+          <td>{{ d.view }}</td>
+          <td>{{ d.viewed_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

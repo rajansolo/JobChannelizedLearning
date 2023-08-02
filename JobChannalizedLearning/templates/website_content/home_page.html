@@ -1,0 +1,16 @@
+{% extends 'root.html' %}
+{% block content %}
+
+    {% if request.user.user_role == 'STUDENT' %}
+        {% include 'snippets/student.html' %}
+    {% endif %}
+
+    {% if request.user.user_role == 'MENTOR' %}
+        {% include 'snippets/mentor.html' %}
+    {% endif %}
+
+    {% if request.user.user_role == 'ADMIN' %}
+        {% include 'snippets/admin.html' %}
+    {% endif %}
+
+{% endblock content%} 

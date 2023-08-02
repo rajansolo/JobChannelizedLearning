@@ -1,0 +1,47 @@
+<!-- quizzes.html -->
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  .quiz-link {
+    color: #007bff;
+  }
+
+  .quiz-link:hover {
+    text-decoration: underline;
+  }
+</style>
+{% extends "root.html" %} {% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+      <h1 class="mb-4">Quiz Manager</h1>
+      <a href="{% url 'quiz:add_quiz' slug=slug %}" class="btn btn-primary"
+        >Add New Quiz</a
+      >
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md-8 offset-md-2">
+      <h2 class="mb-4">Previous Quizzes</h2>
+      <div class="list-group">
+        {% for quiz in quizzes %}
+        <a
+          href="{% url 'quiz:update_quiz' quiz_id=quiz.id slug=slug %}"
+          class="list-group-item list-group-item-action quiz-link"
+          >{{ quiz.name|slice:"3:" }}</a
+        >
+        {% empty %}
+        <div class="list-group-item">No quizzes found.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include Bootstrap JS library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% extends 'root.html' %} {% block content %}
+<section class="bg-white p-4">
+  <div>
+    {% for course in courses %}
+    <div class="card card-sm mb-4">
+      <div class="card-header">
+        <h1>{{ course.slug }}</h1>
+      </div>
+      <div class="card-body">
+        {% for quiz in quizzes %} {% if course.slug in quiz.topic %}
+        <div class="card mb-2">
+          <div class="card-header">
+            <h4>{{ quiz.name|slice:"3:" }}</h4>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Score</th>
+                  <!-- Add more header columns if needed -->
+                </tr>
+              </thead>
+              <tbody>
+                {% for result in quiz.result_set.all %}
+                <tr>
+                  <td>{{ result.user }}</td>
+                  <td>{{ result.score }}</td>
+                  <!-- Display other result fields if needed -->
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

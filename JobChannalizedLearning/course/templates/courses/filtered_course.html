@@ -1,0 +1,92 @@
+{% extends 'root.html' %} {% block content %}
+
+<style>
+  /* Additional custom CSS for responsive heading */
+  @media (max-width: 768px) {
+    .display-4 {
+      font-size: 2rem;
+    }
+  }
+
+  /* Adjust container margin */
+  .container-margin {
+    margin-top: 5px;
+    margin-bottom: 5px; /* Added margin at the bottom to prevent container overflow */
+  }
+</style>
+
+<body>
+  <div class="container mt-2">
+    <div class="m-4 p-2 rounded-3 shadow-lg text-center mt-4">
+      <h1 class="display-4">Course Categories</h1>
+      <p class="lead">
+        Unlock your potential with online learning. Expand your mind and achieve
+        your goals. A world of possibilities. Learn from the best with online
+        courses.
+      </p>
+    </div>
+  </div>
+
+  <div
+    class="m-4 tab-pane fade show active"
+    id="pills-all"
+    role="tabpanel"
+    aria-labelledby="pills-all-tab"
+  >
+    <!-- Items -->
+    <div class="mx-n2">
+      <div class="row justify-content-center">
+        <div
+          class="d-flex justify-content-center row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3"
+        >
+          {% for i in filtered_courses %}
+          <div class="col pb-4">
+            <!-- Card -->
+            <div class="card h-100 border shadow-sm rounded-lg sk-fade">
+              <!-- Image -->
+              <a
+                href="{{ i.slug }}/"
+                class="card-img sk-thumbnail img-ratio-1x1"
+              >
+                <img
+                  class="rounded shadow-light-lg img-fluid h-100 w-100"
+                  src="{{i.featured_image.url}}"
+                  alt="{{i.title}}"
+                />
+              </a>
+
+              <!-- Footer -->
+              <div class="card-footer py-3 position-relative">
+                <a href="{{ i.slug }}/" class="d-block">
+                  <!-- Preheading -->
+                  <span class="mb-1 d-inline-block text-gray-800"
+                    >{{i.category.name}}</span
+                  >
+                </a>
+
+                <!-- Heading -->
+                <div class="position-relative">
+                  <a href="{{ i.slug }}/" class="d-block stretched-link">
+                    <h4
+                      class="line-clamp-2 h-md-48 h-lg-58 me-md-6 me-lg-10 me-xl-4 mb-2"
+                    >
+                      {{i.title}}
+                    </h4>
+                  </a>
+
+                  <div class="d-flex align-items-end mb-2">
+                    <div class="star-rating me-2">
+                      <div class="rating" style="width: 50%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

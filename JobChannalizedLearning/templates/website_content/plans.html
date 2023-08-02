@@ -1,0 +1,125 @@
+{% extends 'root.html' %} {% block head %}
+<title>Plan Selection</title>
+<style>
+  .plan-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    background-color: #f8f8f8;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .plan-card h3 {
+    color: #333;
+    margin-top: 0;
+  }
+
+  .plan-card p {
+    color: #777;
+  }
+
+  .plan-card ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .plan-card li {
+    margin-bottom: 10px;
+  }
+
+  .select-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .select-btn:hover {
+    background-color: #45a049;
+  }
+</style>
+{% endblock head %} {% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <h2 class="text-center mt-4">
+      Please Upgrade Your Plan To Enjoy Our Premium Features
+    </h2>
+
+    <div class="col-md-4">
+      <div class="plan-card">
+        <h3>Basic Plan</h3>
+        <p>Features:</p>
+        <ul>
+          <li>Feature 1</li>
+          <li>Feature 2</li>
+          <li>Feature 3</li>
+        </ul>
+        {% if request.user.plan == 'Basic' %}
+        <a class="select-btn">Selected</a>
+        {% else %}
+        <a
+          href="{% url 'website_content:handle_transaction' 0 %}"
+          class="select-btn"
+          >Downgrade ☹️</a
+        >
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="plan-card">
+        <h3>Super Plan</h3>
+        <p>Features:</p>
+        <ul>
+          <li>Feature 1</li>
+          <li>Feature 2</li>
+          <li>Feature 3</li>
+        </ul>
+        {% if request.user.plan == 'Super' %}
+        <a class="select-btn">Selected</a>
+        {% elif request.user.plan == 'Basic' %}
+        <a href="{% url 'website_content:pay' 10 %}" class="select-btn"
+          >Upgrade 😃</a
+        >
+        {% else %}
+        <a href="{% url 'website_content:pay' 10 %}" class="select-btn"
+          >Downgrade ☹️</a
+        >
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="plan-card">
+        <h3>Pro Plan</h3>
+        <p>Features:</p>
+        <ul>
+          <li>Feature 1</li>
+          <li>Feature 2</li>
+          <li>Feature 3</li>
+        </ul>
+        {% if request.user.plan == 'Pro' %}
+        <a class="select-btn">Selected</a>
+        {% else %}
+        <a href="{% url 'website_content:pay' 15 %}" class="select-btn"
+          >Upgrade 😃</a
+        >
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

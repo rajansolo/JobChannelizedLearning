@@ -1,0 +1,166 @@
+{% extends 'root.html' %} {% block content %}
+<style type=text/css>
+  .btn-custom-size {
+    /* Adjust the width and height as needed */
+    width: 300px;
+    height: 40px;
+    /* Optionally, you can adjust other properties like font-size, padding, etc. */
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <h1>Video List</h1>
+      <div class="row">
+        {% for video in courses %}
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5
+                class="card-title video-title"
+                onclick="openModal('{{ video.video_file.url }}')"
+              >
+                {{ video.title }}
+              </h5>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-right" style="justify-content: space-evenly">
+        {% if request.user.plan == 'Basic' %}
+        <a href="{% url 'website_content:plan_details' %}"
+          ><button id="add-course-button" class="btn btn-primary mb-4">
+            Download Course Materials
+          </button></a
+        >
+        {% else %}
+        <button
+          id="add-course-button"
+          class="btn btn-primary mb-4 btn-custom-size"
+          data-bs-toggle="modal"
+          data-bs-target="#addCategoryModal"
+        >
+          Download Course Materials
+        </button>
+        {% endif %} {% if request.user.plan == 'Pro' %}
+        <h6>
+          <a
+            class="btn btn-primary mb-4 btn-custom-size"
+            href="{% url 'quiz:main-view' slug=slug %}"
+            >Attempt Quiz
+          </a>
+        </h6>
+        {% else %}
+        <a href="{% url 'website_content:plan_details' %}"
+          ><button id="add-course-button" class="btn btn-primary mb-4 btn-custom-size">
+            Attempt Quiz
+          </button></a
+        >
+        {% endif %}
+        <!-- Add any additional functionalities or buttons here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Video Modal -->
+<div
+  class="modal"
+  id="videoModal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+  style="max-width: 100px 700px"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button
+          type="button"
+          class="close"
+          onclick="closeModal()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="embed-responsive embed-responsive-16by9">
+          <video
+            class="embed-responsive-item"
+            controls
+            id="modalVideo"
+            style="width: 100%; height: 100%"
+          >
+            <source src="" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add the following modal code -->
+<div
+  class="modal fade"
+  id="addCategoryModal"
+  tabindex="-1"
+  aria-labelledby="addCategoryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCategoryModalLabel">Download Content</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="uploaded-file-link">
+            <label for="{{ form.zip_file.id_for_label }}">File:</label>
+            {% if form.zip_file.value %}
+            <a href="/media/{{form.zip_file.value}}"
+              >{{ form.zip_file.value }}</a
+            >
+            {% else %} No file selected. {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Hide the form input element and checkbox */
+  .uploaded-file-link input[type="file"],
+  .uploaded-file-link input[type="checkbox"] {
+    display: none;
+  }
+</style>
+
+<script>
+  function openModal(videoSrc) {
+    var modal = document.getElementById("videoModal");
+    var modalVideo = modal.querySelector("#modalVideo");
+    modalVideo.src = videoSrc;
+    modal.style.display = "block";
+  }
+
+  function closeModal() {
+    var modal = document.getElementById("videoModal");
+    var modalVideo = modal.querySelector("#modalVideo");
+    modalVideo.src = "";
+    modal.style.display = "none";
+  }
+</script>
+
+{% endblock%}

@@ -1,0 +1,14 @@
+<!-- update_question.html -->
+{% extends "root.html" %}
+{% block content %}
+    <h1>Update Question</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ formset.management_form }}
+        {% for answer_form in formset %}
+            {{ answer_form.as_table }}
+        {% endfor %}
+        <button type="submit">Save</button>
+    </form>
+{% endblock content %}

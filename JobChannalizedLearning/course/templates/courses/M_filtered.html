@@ -1,0 +1,114 @@
+{% extends 'root.html' %} {% block content %}
+
+    <style>
+        /* Additional custom CSS for responsive heading */
+        @media (max-width: 768px) {
+            .display-4 {
+                font-size: 2rem;
+            }
+            
+        }
+
+        /* Adjust container margin */
+        .container-margin {
+            margin-top: 5px;
+            margin-bottom: 5px; /* Added margin at the bottom to prevent container overflow */
+        }
+    </style>
+</head>
+<body>
+
+{% comment %} Add New Course start {% endcomment %}
+
+<div class="container mt-2" >
+    <div class="m-4 p-2 rounded-3 shadow-lg  text-center mt-4" >
+        <h1 class="display-4">Your Courses</h1>
+        <p class="lead">Share your expertise with aspiring learners! Create and manage your courses on our platform.</p>
+        <button id="add-course-button" class="btn btn-primary btn-lg mb-2" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+            Add New Course
+        </button>
+    </div>
+</div>
+
+{% comment %} Add New Course end {% endcomment %}
+
+{% comment %} Course card container start {% endcomment %}
+<div class="container container-margin">
+    <!-- Items -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+        {% for i in filtered_courses %}
+        <div class="col pb-4">
+            <!-- Card -->
+            <div class="card h-100 border shadow-sm rounded-lg sk-fade">
+                <!-- Image -->
+                <div class="card-zoom position-relative">
+                    <a href="{{ i.slug }}/" class="card-img sk-thumbnail img-ratio-1x1">
+                        <img class="rounded shadow-light-lg img-fluid h-100 w-100" src="{{i.featured_image.url}}" alt="{{i.title}}">
+                    </a>
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer py-3 position-relative">
+                    <a href="{{ i.slug }}/" class="d-block">
+                        <!-- Link content -->
+                    </a>
+
+                    <!-- Preheading -->
+                    <a href="{{ i.slug }}/">
+                        <span class="mb-1 d-inline-block text-gray-800">{{i.category.name}}</span>
+                    </a>
+
+                    <!-- Heading -->
+                    <div class="position-relative">
+                        <a href="{{ i.slug }}/" class="d-block stretched-link">
+                            <h4 class="line-clamp-2 h-md-48 h-lg-58 me-md-6 me-lg-10 me-xl-4 mb-2">{{i.title}}</h4>
+                        </a>
+
+                        <div class="d-flex align-items-end mb-2">
+                            <div class="star-rating me-2">
+                                <div class="rating" style="width: 50%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% comment %} Course card container end {% endcomment %}
+
+</body>
+
+
+
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="addCategoryModalLabel">Add Course Content</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Include Bootstrap JS library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+{% endblock %}

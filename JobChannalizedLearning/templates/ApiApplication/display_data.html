@@ -1,0 +1,107 @@
+{% extends 'root.html' %}
+{% block content %}
+    <style type="text/css">
+      .chart-image:hover {
+    transform: scale(1.02);
+  }
+    </style>
+<section style="margin-top: 5%;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 chart-image shadow">
+                <img src="data:image/png;base64,{{ chart1 }}" class="img-fluid" alt="chart1" id="chart1Image">
+            </div>
+            <div class="col-sm-4 chart-image shadow">
+                <img src="data:image/png;base64,{{ chart2 }}" class="img-fluid" alt="chart1" id ="chart2Image">
+            </div>
+            <div class="col-sm-4 chart-image shadow">
+                <img src="data:image/png;base64,{{ chart3 }}"  class="img-fluid" alt="chart1" id ="chart3Image">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Dialog -->
+<div class="modal" id="chartModal1" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">All Roles</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul>
+        {% for item in top_roles %}
+            <li>{{ item.role }}: {{ item.count }}</li>
+        {% endfor %}
+    </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Modal Dialog-2 for Number of Students per company -->
+<div class="modal" id="chartModal2" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Number of Students Per Company</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul>
+        {% for item in top_companies %}
+            <li>{{ item.company }}: {{ item.count }} Students</li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Modal Dialog-3 for -->
+<div class="modal" id="chartModal3" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Role Counts By Company</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul>
+            {% for company, role_counts in company_role_counts.items %}
+                <h5>{{ company }}</h5>
+                <ul>
+                    {% for role, count in role_counts.items %}
+                        <li>{{ role }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<!-- Custom Script to Trigger Modal -->
+<script>
+  $(document).ready(function() {
+    $("#chart1Image").click(function() {
+      $("#chartModal1").modal("show");
+    });
+    $("#chart2Image").click(function() {
+      $("#chartModal2").modal("show");
+    });
+    $("#chart3Image").click(function() {
+      $("#chartModal3").modal("show");
+    });
+  });
+</script>
+{% endblock %}
